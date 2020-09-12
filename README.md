@@ -7,7 +7,7 @@
 
 ## Description
 
-Coming Q4 2020 - Unified API for the QuestNetwork dStack.
+Coming Q4 2020 - Data/File Persistance For The Quest Network.
 
 ## Installation & Usage
 
