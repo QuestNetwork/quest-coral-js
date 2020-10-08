@@ -36,7 +36,7 @@ constructor(){}
     this.bee.comb.set( path, { dag: 1, whistle: secret, hash: hash } );
   }
 
-  add(path, unencrytpedObject){
+  async add(path, unencrytpedObject){
     //path to timeline array
     let {secret, aesEncryptedB64 } = this.crypto.aes.encrypt(unencrytpedObject);
     encryptedHex = Buffer.from(aesEncryptedB64,'base64').toString('hex');
