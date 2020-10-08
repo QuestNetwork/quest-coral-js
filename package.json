@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@questnetwork/quest-crypto-js": "../quest-crypto-js",
-
     "rxjs": "6.6.3",
     "uuid": "^8.2.0"
   },
