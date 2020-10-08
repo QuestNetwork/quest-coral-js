@@ -46,7 +46,7 @@ constructor(){}
 
   async resolve(inputArray){
     let outputArray = [];
-    for(dagNode of inputArray){
+    for(let dagNode of inputArray){
       outputArray.push( this.get(dagNode['hash'],dagNode['whistle']) );
     }
     return outputArray;
