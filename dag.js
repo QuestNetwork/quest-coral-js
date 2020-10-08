@@ -18,10 +18,15 @@ constructor(){}
     results = [];
     if(typeof array['indexOf'] != 'undefined'){
       for( entry of array ){
-        results.push(this.crypto.aes.decryptHex(await this.ipfsNode.dag.get(entry['hash']),entry['whistle']);
+        let encryptedHex = await this.ipfsNode.dag.get(entry['hash'];
+        results.push(this.crypto.aes.decryptHex(encryptedHex),entry['whistle']));
       }
+      return results;
     }
-    return results;
+    else{
+      let encryptedHex = await this.ipfsNode.dag.get(array['hash'];
+      return this.crypto.aes.decryptHex(encryptedHex),array['whistle']);
+    }
   }
 
   async set(path, unencrytpedObject){
