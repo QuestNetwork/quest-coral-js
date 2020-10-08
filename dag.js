@@ -19,13 +19,13 @@ constructor(){}
     if(typeof array['indexOf'] != 'undefined'){
       for( entry of array ){
         let encryptedHex = await this.ipfsNode.dag.get(entry['hash']);
-        results.push(this.crypto.aes.decryptHex(encryptedHex),entry['whistle']));
+        results.push(this.crypto.aes.decryptHex(encryptedHex,entry['whistle']));
       }
       return results;
     }
     else{
       let encryptedHex = await this.ipfsNode.dag.get(array['hash']);
-      return this.crypto.aes.decryptHex(encryptedHex),array['whistle']);
+      return this.crypto.aes.decryptHex(encryptedHex,array['whistle']);
     }
   }
 
