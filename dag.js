@@ -17,7 +17,7 @@ constructor(){}
     let array = this.bee.comb.get(path);
     let results = [];
     if(typeof array['indexOf'] != 'undefined'){
-      for( entry of array ){
+      for(let entry of array ){
         let encryptedHex = await this.ipfsNode.dag.get(entry['hash']);
         results.push(this.crypto.aes.decryptHex(encryptedHex,entry['whistle']));
       }
