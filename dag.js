@@ -15,7 +15,7 @@ constructor(){}
 
   async get(path){
     let array = this.bee.comb.get(path);
-    results = [];
+    let results = [];
     if(typeof array['indexOf'] != 'undefined'){
       for( entry of array ){
         let encryptedHex = await this.ipfsNode.dag.get(entry['hash']);
