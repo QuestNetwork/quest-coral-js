@@ -31,7 +31,7 @@ constructor(){}
 
   async set(path, unencrytpedObject){
     let {secret, aesEncryptedB64 } = this.crypto.aes.encrypt(unencrytpedObject);
-    encryptedHex = Buffer.from(aesEncryptedB64,'base64').toString('hex');
+    let encryptedHex = Buffer.from(aesEncryptedB64,'base64').toString('hex');
     let hash = await this.ipfsNode.dag.put(encryptedHex,{ format: 'dag-cbor', hashAlg: 'sha2-256' });
     this.bee.comb.set( path, { dag: 1, whistle: secret, hash: hash } );
   }
@@ -39,7 +39,7 @@ constructor(){}
   async add(path, unencrytpedObject){
     //path to timeline array
     let {secret, aesEncryptedB64 } = this.crypto.aes.encrypt(unencrytpedObject);
-    encryptedHex = Buffer.from(aesEncryptedB64,'base64').toString('hex');
+    let encryptedHex = Buffer.from(aesEncryptedB64,'base64').toString('hex');
     let hash = await this.ipfsNode.dag.put(encryptedHex,{ format: 'dag-cbor', hashAlg: 'sha2-256' });
     this.bee.comb.add( path, { dag: 1, whistle: secret, hash: hash } );
   }
