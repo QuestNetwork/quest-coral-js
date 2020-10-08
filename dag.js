@@ -42,7 +42,14 @@ constructor(){}
     encryptedHex = Buffer.from(aesEncryptedB64,'base64').toString('hex');
     let hash = await this.ipfsNode.dag.put(encryptedHex,{ format: 'dag-cbor', hashAlg: 'sha2-256' });
     this.bee.comb.add( path, { dag: 1, whistle: secret, hash: hash } );
+  }
 
+  async resolve(inputArray){
+    let outputArray = [];
+    for(dagNode of inputArray){
+      outputArray.push( this.get(dagNode['hash'],dagNode['whistle']) );
+    }
+    return outputArray;
   }
 
 }
