@@ -15,27 +15,32 @@ constructor(){}
 
   async get(path){
     let array = this.bee.comb.get(path);
-    console.log(array);
     let results = [];
     if(typeof array['indexOf'] != 'undefined'){
       for(let entry of array ){
         if(typeof entry['qHash'] == 'string'){
+          try{
           console.log(entry['qHash']);
           let encryptedHex = await this.ipfsNode.dag.get(entry['qHash']);
           // console.log(encryptedHex);
           let decrypted = this.crypto.aes.decryptHex(encryptedHex.value,entry['whistle']);
           decrypted['qHash'] = entry['qHash'];
           results.push(decrypted);
+          }
+          catch(e){console.log(e)}
         }
       }
       console.log(results);
       return results;
     }
     else if(typeof array['qHash'] == 'string'){
-        let encryptedHex = await this.ipfsNode.dag.get(array['qHash']);
-        let decrypted = this.crypto.aes.decryptHex(encryptedHex.value,array['whistle']);
-        decrypted['qHash'] = array['qHash'];
-        return decrypted;
+        try{
+          let encryptedHex = await this.ipfsNode.dag.get(array['qHash']);
+          let decrypted = this.crypto.aes.decryptHex(encryptedHex.value,array['whistle']);
+          decrypted['qHash'] = array['qHash'];
+          return decrypted;
+        }
+        catch(e){console.log(e)}
     }
 
     throw('Quest Coral: Could not get',path);
@@ -63,12 +68,14 @@ constructor(){}
     console.log('Quest Coral JS: resolving...',inputArray);
     for(let dagNode of inputArray){
       if(typeof dagNode['qHash'] == 'string'){
-        console.log('QCJS: resolving... ',dagNode['qHash']);
-        let encryptedHex = await this.ipfsNode.dag.get(dagNode['qHash']);
-        console.log(encryptedHex.value);
-        let decrypted =  this.crypto.aes.decryptHex(encryptedHex.value,dagNode['whistle']);
-        decrypted['qHash'] = dagNode['qHash'];
-        outputArray.push( decrypted );
+        try{
+          console.log('QCJS: resolving... ',dagNode['qHash']);
+          let encryptedHex = await this.ipfsNode.dag.get(dagNode['qHash']);
+          console.log(encryptedHex.value);
+          let decrypted =  this.crypto.aes.decryptHex(encryptedHex.value,dagNode['whistle']);
+          decrypted['qHash'] = dagNode['qHash'];
+          outputArray.push( decrypted );
+        }catch(e){console.log(e)}
       }
     }
     console.log(outputArray);
