@@ -128,20 +128,39 @@ if(typeof config['storagePath'] == 'undefined'){
      }
      else{
 
-       let txObj = this.bee.comb.get( config['storagePath'] + '/obj/'+hash );
+       console.log(config['storagePath']);
+       console.log(hash)
+       let txObj = {};
+       if(typeof config['ref'] != 'undefined' && config['ref'] == true){
+         txObj = this.bee.comb.get( config['storagePath'] + '/ref/'+hash );
+
+       }
+       else{
+         txObj = this.bee.comb.get( config['storagePath'] + '/obj/'+hash );
+       }
+
        console.log(txObj);
+
        if(typeof txObj != 'undefined'  && typeof txObj['whistle'] == 'undefined' &&   typeof txObj['qHash'] != 'undefined' ){
          resolve(txObj);
        }else{
          let  encryptedHex = await this.ipfsNode.dag.get(hash);
          let decrypted = this.crypto.aes.decryptHex(encryptedHex.value,whistle);
-         decrypted['qHash'] = hash;
+         try{
+           if(typeof decrypted['qHash'] == 'undefined'){
+             decrypted['qHash'] = hash;
+           }
+        }
+        catch(e){
+          resolve({});
+        }
 
          if(typeof decrypted['whistle'] == 'undefined' && typeof decrypted['qHash'] != 'undefined'){
            this.bee.comb.set( config['storagePath'] + '/obj/'+decrypted['qHash'] ,decrypted );
          }
          else if(typeof decrypted['whistle'] != 'undefined' && typeof decrypted['qHash'] != 'undefined'){
-             // this.bee.comb.set( config['storagePath'] + '/ref/'+decrypted['qHash'] ,decrypted );
+             this.bee.comb.set( config['storagePath'] + '/ref/'+hash ,decrypted );
+             console.log('got ref');
           }
 
          resolve(decrypted);
@@ -188,6 +207,8 @@ if(typeof config['storagePath'] == 'undefined'){
                                     if(config['type'] == 'path'){
 
                                       console.log(transactionRefObject);
+                                      console.log(latestTransaction);
+
 
                                       if(typeof latestTransaction == 'undefined' || latestTransaction['whistle'] == 'undefined'){
                                         let refObj = this.bee.comb.get( config['storagePath'] + '/ref/'+transactionRefObject['qHash'] );
@@ -195,11 +216,12 @@ if(typeof config['storagePath'] == 'undefined'){
                                            latestTransaction = refObj;
                                         }
                                         else{
-                                          let  encryptedHex = await this.ipfsNode.dag.get(transactionRefObject['qHash']);
-                                          latestTransaction = this.crypto.aes.decryptHex(encryptedHex.value,transactionRefObject['whistle']);
-                                          if(typeof latestTransaction['whistle'] != 'undefined' && typeof latestTransaction['qHash'] != 'undefined'){
-                                            this.bee.comb.set( config['storagePath'] + '/ref/'+latestTransaction['qHash'] ,latestTransaction );
-                                          }
+                                          let tConfig = JSON.parse(JSON.stringify(config));
+                                          tConfig['ref'] = true;
+                                          latestTransaction = await this.getObject(transactionRefObject['qHash'],transactionRefObject['whistle'], tConfig);
+                                          // if(typeof latestTransaction['whistle'] != 'undefined' && typeof latestTransaction['qHash'] != 'undefined'){
+                                          //   this.bee.comb.set( config['storagePath'] + '/ref/'+latestTransaction['qHash'] ,latestTransaction );
+                                          // }
                                         }
                                       }
 
