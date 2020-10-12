@@ -77,7 +77,7 @@ if(typeof config['storagePath'] == 'undefined'){
                                       latestTransactionRef['whistle'] = config['whistle'];
                                     }
                                     else{
-                                      console.log('here')
+                                      // console.log('here')
                                       latestTransactionRef['whistle']  = this.getWhistleForRefHash( latestTransaction['qHash'], config['storagePath'] );
                                     }
 
@@ -88,7 +88,7 @@ if(typeof config['storagePath'] == 'undefined'){
                                   latestTransactionRef['qHash'] = pathOrCid;
 
                                   if(typeof config['whistle'] == 'undefined'){
-                                    console.log('here2')
+                                    // console.log('here2')
                                     latestTransactionRef['whistle'] =   this.getWhistleForRefHash( latestTransactionRef['qHash'],config['storagePath']);
                                   }
                                   else{
@@ -98,7 +98,7 @@ if(typeof config['storagePath'] == 'undefined'){
                                   type = "hash";
                                 }
 
-                                console.log(latestTransactionRef);
+                                // console.log(latestTransactionRef);
 
                                 if(typeof latestTransactionRef['whistle'] == 'undefined' || !latestTransactionRef['whistle']){
                                   throw('no whistle');
@@ -128,8 +128,8 @@ if(typeof config['storagePath'] == 'undefined'){
      }
      else{
 
-       console.log(config['storagePath']);
-       console.log(hash)
+       // console.log(config['storagePath']);
+       // console.log(hash)
        let txObj = {};
        if(typeof config['ref'] != 'undefined' && config['ref'] == true){
          txObj = this.bee.comb.get( config['storagePath'] + '/ref/'+hash );
@@ -139,7 +139,7 @@ if(typeof config['storagePath'] == 'undefined'){
          txObj = this.bee.comb.get( config['storagePath'] + '/obj/'+hash );
        }
 
-       console.log(txObj);
+       //console.log(txObj);
 
        if(typeof txObj != 'undefined'  && typeof txObj['whistle'] == 'undefined' &&   typeof txObj['qHash'] != 'undefined' ){
          resolve(txObj);
@@ -160,7 +160,7 @@ if(typeof config['storagePath'] == 'undefined'){
          }
          else if(typeof decrypted['whistle'] != 'undefined' && typeof decrypted['qHash'] != 'undefined'){
              this.bee.comb.set( config['storagePath'] + '/ref/'+hash ,decrypted );
-             console.log('got ref');
+            // console.log('got ref');
           }
 
          resolve(decrypted);
@@ -171,12 +171,15 @@ if(typeof config['storagePath'] == 'undefined'){
 
      setTimeout( () => {
         resolve({})
-     },5000)
+     },3000)
 
    });
  }
 
  recursiveDagWorker(transactionRefObject, config = { limit: 5}, limitWalker = 0){
+
+   let timeout = 120000;
+
    return new Promise( async(resolve) => {
      let  latestTransaction;
      let results = [];
@@ -193,9 +196,9 @@ if(typeof config['storagePath'] == 'undefined'){
                                       throw('no ref');
                                     }
                                     else if(config['type'] == 'hash'){
-                                      console.log(transactionRefObject);
+                                    //  console.log(transactionRefObject);
                                       let txObj = await this.getObject(transactionRefObject['qHash'],transactionRefObject['whistle'],config);
-                                      console.log(txObj);
+                                    //  console.log(txObj);
                                       if(typeof txObj != 'undefined' && typeof txObj['whistle'] != 'undefined'){
                                         config['type'] = 'path'
                                         latestTransaction = txObj;
@@ -206,8 +209,8 @@ if(typeof config['storagePath'] == 'undefined'){
 
                                     if(config['type'] == 'path'){
 
-                                      console.log(transactionRefObject);
-                                      console.log(latestTransaction);
+                                    //  console.log(transactionRefObject);
+                                    //  console.log(latestTransaction);
 
 
                                       if(typeof latestTransaction == 'undefined' || latestTransaction['whistle'] == 'undefined'){
@@ -230,7 +233,7 @@ if(typeof config['storagePath'] == 'undefined'){
                                       console.log('00000:',latestTransaction,limitWalker);
                                       if(typeof latestTransaction['whistle'] != 'undefined' && typeof latestTransaction['qHash'] != 'undefined'){
                                           ///now we have the reference to the latest post
-                                          console.log(latestTransaction);
+                                        //  console.log(latestTransaction);
                                           let txObj = await this.getObject(latestTransaction['qHash'],latestTransaction['whistle'],config)
                                           if(typeof txObj != 'undefined'  && typeof txObj['whistle'] == 'undefined' &&   typeof txObj['qHash'] != 'undefined' ){
                                             results.push(txObj);
@@ -262,7 +265,7 @@ if(typeof config['storagePath'] == 'undefined'){
 
            setTimeout( () => {
               resolve(results)
-           },5000)
+           },timeout)
          });
 }
 
