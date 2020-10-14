@@ -14,16 +14,16 @@ constructor(){}
 
   //
   getWhistleForRefHash(hash,search){
-    console.log(hash);
-    console.log(search);
+    // console.log(hash);
+    // console.log(search);
 
     if(search.charAt(search.length-1) != '/'){
       search += '/'
     }
     let array =  this.bee.comb.search(search);
-    console.log(array);
+    // console.log(array);
     array = array.flat().flat();
-    console.log(array);
+    // console.log(array);
     for(let e of array){
       if(e['qHash'] == hash){
         return e['whistle'];
@@ -131,12 +131,15 @@ if(typeof config['storagePath'] == 'undefined'){
        // console.log(config['storagePath']);
        // console.log(hash)
        let txObj = {};
-       if(typeof config['ref'] != 'undefined' && config['ref'] == true){
+       if(typeof config['ref'] != 'undefined' && config['ref'] == true  && typeof config['cacheRef'] != 'undefined'){
          txObj = this.bee.comb.get( config['storagePath'] + '/ref/'+hash );
 
        }
-       else{
+       else if(typeof config['cacheObj'] != 'undefined'){
          txObj = this.bee.comb.get( config['storagePath'] + '/obj/'+hash );
+       }
+       else{
+         {}
        }
 
        //console.log(txObj);
@@ -155,13 +158,36 @@ if(typeof config['storagePath'] == 'undefined'){
           resolve({});
         }
 
-         if(typeof decrypted['whistle'] == 'undefined' && typeof decrypted['qHash'] != 'undefined'){
+         if(typeof decrypted['whistle'] == 'undefined' && typeof decrypted['qHash'] != 'undefined' && typeof config['cacheObj']  != 'undefined'){
            this.bee.comb.set( config['storagePath'] + '/obj/'+decrypted['qHash'] ,decrypted );
          }
-         else if(typeof decrypted['whistle'] != 'undefined' && typeof decrypted['qHash'] != 'undefined'){
+         else if(typeof decrypted['whistle'] == 'undefined' && typeof decrypted['qHash'] != 'undefined' && typeof config['cacheObj']  == 'undefined'){
+           if( this.bee.comb.get('/settings/ipfs/pin-from') == 'Favorites' && this.bee.comb.in('/social/favorites',decrypted['socialPubKey'])){
+             this.ipfsNode.pin.add(decrypted['qHash']);
+           }else if( this.bee.comb.get('/settings/ipfs/pin-from') == 'Favorites'){
+
+           }
+           else{
+             //set to everyone
+             this.ipfsNode.pin.add(decrypted['qHash']);
+           }
+         }
+         else if(typeof decrypted['whistle'] != 'undefined' && typeof decrypted['qHash'] != 'undefined'  && typeof config['cacheRef'] != 'undefined'){
              this.bee.comb.set( config['storagePath'] + '/ref/'+hash ,decrypted );
             // console.log('got ref');
           }
+          else if(typeof decrypted['whistle'] != 'undefined' && typeof decrypted['qHash'] != 'undefined'  && typeof config['cacheRef'] == 'undefined'){
+
+            // if( this.bee.comb.get('/settings/ipfs/pin-from') == 'Favorites' && (this.profile.isFavorite(decrypted['socialPubKey']) || this.profile.isRequestedFavorite(decrypted['socialPubKey']))){
+              // this.ipfsNode.pin.add(hash);
+            // }else{
+              // this.ipfsNode.pin.add(hash);
+            // }
+             // console.log('got ref');
+           }
+
+
+
 
          resolve(decrypted);
        }
@@ -230,7 +256,7 @@ if(typeof config['storagePath'] == 'undefined'){
 
 
 
-                                      console.log('00000:',latestTransaction,limitWalker);
+                                      //console.log('00000:',latestTransaction,limitWalker);
                                       if(typeof latestTransaction['whistle'] != 'undefined' && typeof latestTransaction['qHash'] != 'undefined'){
                                           ///now we have the reference to the latest post
                                         //  console.log(latestTransaction);
@@ -304,7 +330,7 @@ try{
       let transactionRef;
     try{
       latestRefObject =  this.bee.comb.get( path );
-      console.log(latestRefObject)
+      // console.log(latestRefObject)
     }catch(e){console.log(e)}
 
     let hash = "";
@@ -336,8 +362,6 @@ try{
     // this.dagCache[hash] = unencrytpedObject;
     this.bee.comb.set(path,transactionRef);
     this.bee.comb.set( storagePath + '/ref/'+hash ,transactionRef );
-
-    this.bee.comb.set( path ,transactionRef );
 
     // this.bee.comb.set( '/social/archive/'+transaction['qHash'] , transaction );
     return transactionRef;
