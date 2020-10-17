@@ -7,7 +7,7 @@
 
 ## Description
 
-Coming Q4 2020 - Data/File Persistance For The Quest Network.
+IPFS Datastore Interface For The Quest Network.
 
 ## Installation & Usage
 
