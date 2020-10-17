@@ -11,7 +11,7 @@ IPFS Datastore For The Quest Network.
 
 ## Installation & Usage
 
-``npm install @questnetwork/quest-coral-js@0.9.6``
+``npm install @questnetwork/quest-coral-js@0.9.4``
 
 We recommend to use our [quest-cli](https://github.com/QuestNetwork/quest-cli) to test and build the package.
 Pro Tip: Put a file in your `/bin` that runs the quest-cli like so `node /path/to/quest-cli/index.js` from any folder on your system. It's much nicer!
