@@ -20,6 +20,7 @@ Pro Tip: Put a file in your `/bin` that runs the quest-cli like so `node /path/t
 
 **0.9.4**
 - Basic functionality
+- Uses [`ipfs.dag`](https://docs.ipfs.io/concepts/merkle-dag/)
 
 ## Support Us
 This project is a lot of work and unfortunately we need to eat food (ツ)
