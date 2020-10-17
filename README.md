@@ -1,5 +1,5 @@
 # Quest Coral JS
-> File/Data Persistance For The Quest Network
+> IPFS Datastore For The Quest Network
 
 ## Lead Maintainer
 
@@ -18,7 +18,7 @@ Pro Tip: Put a file in your `/bin` that runs the quest-cli like so `node /path/t
 
 ## Features
 
-**0.9.6**
+**0.9.4**
 - Basic functionality
 
 ## Support Us
