@@ -7,7 +7,7 @@
 
 ## Description
 
-IPFS Datastore Interface For The Quest Network.
+IPFS Datastore For The Quest Network.
 
 ## Installation & Usage
 
