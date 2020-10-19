@@ -26,7 +26,7 @@ Pro Tip: Put a file in your `/bin` that runs the quest-cli like so `node /path/t
 Returns the reference object.
 
 ``
-let latestRef = <os>.coral.dag.set('/my/path',unencrytpedObject,{ storagePath: '/archive/social/timeline/transaction' });
+let latestRef = <os>.ocean.coral.dag.set('/my/path',unencrytpedObject,{ storagePath: '/archive/social/timeline/transaction' });
 ``
 
 #### async add(path, unencrytpedObject,storagePath)
@@ -35,7 +35,7 @@ let latestRef = <os>.coral.dag.set('/my/path',unencrytpedObject,{ storagePath: '
 Returns the reference object.
 
 ``
-let latestRef = <os>.coral.dag.add('/my/path',unencrytpedObject,{ storagePath: '/archive/social/timeline/transaction' });
+let latestRef = <os>.ocean.coral.dag.add('/my/path',unencrytpedObject,{ storagePath: '/archive/social/timeline/transaction' });
 ``
 
 #### async get(pathOrCid, config = {})
@@ -44,7 +44,7 @@ let latestRef = <os>.coral.dag.add('/my/path',unencrytpedObject,{ storagePath: '
 
 Returns the decrypted object or array of objects.
 ``
-let array = <os>.coral.dag.get('/my/path',{ limit: 5 });
+let array = <os>.ocean.coral.dag.get('/my/path',{ limit: 5 });
 ``
 
 ## Features
@@ -54,7 +54,7 @@ let array = <os>.coral.dag.get('/my/path',{ limit: 5 });
 - Uses [`ipfs.dag`](https://docs.ipfs.io/concepts/merkle-dag/)
 
 ## Support Us
-This project is a lot of work and unfortunately we need to eat food (ツ)
+This project is a lot of work, please help us start a non-profit for it (ツ)
 
 | Ethereum| Bitcoin |
 |---|---|
